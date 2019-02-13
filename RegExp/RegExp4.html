@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    // 后行否定断言 /(?<!y)x/ 必须满足条件值为不等于y,匹配到y后面的部分(列子: 货币)
+    const re = /(?<!\d{3}) meters/;
+
+    console.log(re.exec('10 meters'));
+    // → [" meters", groups: undefined, index: 2, input: "10 meters"]
+
+    console.log(re.exec('100 meters'));
+    // → null
+</script>
+
+</html>

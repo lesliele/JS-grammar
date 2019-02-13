@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    // 先行否定断言 /x(?!y)/ 必须满足条件值为不等于y,匹配到y前面的部分
+    const re = /Red(?!head)/;
+
+    console.log(re.exec('Redhead'));
+    // → null
+
+    console.log(re.exec('Redberry'));
+    // → ["Red", groups: undefined, index: 0, input: "Redberry"]
+
+    console.log(re.exec('Redjay'));
+    // → ["Red", groups: undefined, index: 0, input: "Redjay"]
+
+    console.log(re.exec('Red'));
+    // → ["Red", groups: undefined, index: 0, input: "Red"]
+
+</script>
+</html>
