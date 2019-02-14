@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    var n = 2;
+    var obj = {
+        n: 3,
+        fn: (function(n) {  
+            n*=2;
+            this.n+=2;
+            var n = 5;
+            return function(m) {
+                console.log(this.n)
+                this.n*=2;
+                console.log(m + (++n))
+            }
+        })(n)
+    }
+    var fn = obj.fn;
+    fn(3); 
+    // obj.fn(3); 
+    console.log(n, obj.n) 
+    // 自执行函数this执行永远是window
+    // let a = {
+    //     b: (function() {
+    //         console.log(this)
+    //     })()
+    // }
+    // a.b
+</script>
+</html>
