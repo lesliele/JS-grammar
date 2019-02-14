@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    // JavaScript 特殊字符(需要转义)
+    // (单引号)\' (双引号)\" (和号)\& (反斜杠)\\ (换行符)\n (回车符)\r (制表符)\t (退格符)\b (换页符)\f
+    // JavaScript 正则表达式需要转义的字符
+    // * . ? + $ ^ [ ] ( ) { } | \ /  都是在正则表达式中起到作用的
+    // 正则表达式是匹配模式，掌握基础的匹配字符和匹配位置
+    // 1.正则表达式字符匹配攻略
+    // a.两种模糊匹配;b.字符组;c.量词;d.多选分支;e.案例
+    // tips: match的匹配 是否有全局g,如果存在g，返回一个包含匹配到的数组; 如果不存在g,返回带有input,index属性
+    // a.两种模糊匹配;(横向模糊和纵向模糊)
+    // 横向模糊指的是匹配到的字符长度不是固定的，可能有多个;其实现的方式通过量词({m, n})
+    // 纵向模糊指的是匹配到的字符不确定的，可能有多种;其实现的方式通过字符组([abc])
+    // b.字符组([abc]); \w就是[0-9a-zA-Z_] \s是[ \t\v\n\r\f]
+    // c.量词({m,n})  (贪婪匹配和惰性匹配)
+    var regex = /\d{2,5}/g;
+    var string = "123 1234 12345 123456";
+    console.log(string.match(regex));
+    // => ["123", "1234", "12345", "12345"]
+    // 是贪婪的，它会尽可能多的匹配
+    // 惰性匹配，就是尽可能少的匹配
+    var regex = /\d{2,5}?/g;
+    var string = "123 1234 12345 123456";
+    console.log(string.match(regex));
+    // => ["12", "12", "34", "12", "34", "12", "34", "56"]
+    // d.多选分支
+    // (p1|p2|p3) p1,p2,p3是子模式,用|(管道符)分割
+    // e.案例
+    // (window操作系统文件路径)
+    // 这里需要注意的是字符串和正则表达式中的特殊字符串都需要转义
+    var regex = /^[a-zA-Z]:\\([^\/:*<>?"|]+\\?)*/;
+    var string = "F:\\study\\javascript\\regex\\regular expression.pdf";
+    console.log(string.match(regex));
+    // (匹配id)
+    // tips: 并不是说所有的提取内容通过$1,$2,也可以通过match去匹配到内容    
+    // 使用惰性匹配
+    var regex = /id=".*?"/;
+    var string = "<div id=\"container\" class=\"main\"></div>";
+    console.log(string.match(regex));
+</script>
+</html>
