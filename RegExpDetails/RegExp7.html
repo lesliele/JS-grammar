@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    // 二.正则表达式位置匹配攻略
+    // 1.匹配位置操作;2.案例
+    // 共有6个字符（^ $ \b \B (?=p) (?!p)）
+    // a.(^和$) 匹配开头和结尾
+    // b.(\b和\B) \b表示单词边界。也就是说在(\w和\W, \w和^, \w和$)之间的位置 (例子:[JS] Lesson_01.mp4)
+    // c.((?=p)和(?!p)) 和 ((?<=p)和(?<!p))
+    // 2.案例
+    // (数字的千位分隔符表示法) 先行断言的用法
+    // 由于默认是贪婪模式,所以刚开始匹配的是6位，而后是3位
+    var regex = /(?!^)(?=(\d{3})+$)/g;
+    var string = "123456789";
+    console.log(string.replace(regex, ","));
+
+    
+    // 观察下面的正则表达式可以发现，先行断言后面跟着^((?=.*(\d{3}))^),为什么会在^开头之前呢
+    // 可以这么理解，先行判断只是在寻找某个字符串符合后面紧跟着3个数字,即是(zz123),而后开始正常匹配.
+    var regex = /(?=.*(\d{3}))^[0-9a-zA-Z]+$/;
+    var string = "zz123bc";
+    console.log(string.match(regex));
+    // (验证密码问题) 也是采用先行断言的方法
+    var reg = /((?=.*[0-9])(?=.*[a-z])|(?=.*[0-9])(?=.*[A-Z])|(?=.*[a-z])(?=.*[A-Z]))^[0-9A-Za-z]{6,12}$/;
+    console.log( reg.test("1234567") ); // false 全是数字
+    console.log( reg.test("abcdef") ); // false 全是小写字母
+    console.log( reg.test("ABCDEFGH") ); // false 全是大写字母
+    console.log( reg.test("ab23C") ); // false 不足6位
+    console.log( reg.test("ABCDEF234") ); // true 大写字母和数字
+    console.log( reg.test("abcdEF234") ); // true 三者都有
+
+    // 小程序版本检测
+    var regex = /(?<=.|^)(\d+)/g;
+    var string = "7.2.97";
+    console.log(string.match(regex));
+</script>
+</html>
