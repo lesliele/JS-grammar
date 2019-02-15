@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    // 正则表达式括号的作用
+    // a.分组和分支结构；b.捕获分组；c.反向引用；d.非捕获分组；e.案例
+    // a.分组和分支结构(后者与管道符结合)
+    // b.捕获分组   
+    // 1.提取数据(exec,match,构造函数$1)
+    // 2.替换
+    // tips:注意replace的使用方式
+    // 常用用法
+    var regex = /(\d{4})-(\d{2})-(\d{2})/;
+    var string = "2017-06-12";
+    var result = string.replace(regex, "$2/$3/$1");
+    console.log(result);
+    // => "06/12/2017"
+    // 函数写法
+    var regex = /(\d{4})-(\d{2})-(\d{2})/;
+    var string = "2017-06-12";
+    var result = string.replace(regex, function () {
+        return RegExp.$2 + "/" + RegExp.$3 + "/" + RegExp.$1;
+    });
+    console.log(result);
+
+    var regex = /(\d{4})-(\d{2})-(\d{2})/;
+    var string = "2017-06-12";
+    var result = string.replace(regex, function (match, year, month, day) {
+        console.log(match,year,month,day);
+        return month + "/" + day + "/" + year;
+    });
+    console.log(result);
+    // c.反向引用
+    // 1.括号嵌套
+    var regex = /^((\d)(\d(\d)))\1\2\3\4$/;
+    var string = "1231231233";
+    console.log( regex.test(string) ); // true
+    console.log( RegExp.$1 ); // 123
+    console.log( RegExp.$2 ); // 1
+    console.log( RegExp.$3 ); // 23
+    console.log( RegExp.$4 ); // 3
+    // d.非捕获分组
+    var regex = /(?:ab)+/g;
+    var string = "ababa abbb ababab";
+    console.log( string.match(regex));
+    // => ["abab", "ab", "ababab"]
+    // e.案例
+    // 1.(将每个单词的首字母转换为大写,并且消除单词前面的空格)(this is oop => ThisIsOop) (非捕获分组)
+    var regex = /(?:^|\s)(\w)/g;
+    var string = "my name is xx";
+    var result = string.replace(regex, function (c,n) {
+        console.log("匹配到的内容"+c) //会匹配到空格
+        console.log("捕获到的内容"+n) //不会匹配到空格
+        return n.toUpperCase();
+    });
+    console.log(result);
+</script>
+</html>
