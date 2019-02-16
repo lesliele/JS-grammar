@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    // 正则表达式回溯法匹配原理
+    // a.没有回溯的匹配(/ab{1,3}c/ => abbbc) b.有回溯的匹配(/ab{1,3}c/ => abbc) c.常见的回溯匹配
+    // c.常见的回溯匹配
+    // 1.贪婪量词(\d{1,3})
+    // 2.惰性量词(demo2就体现了回溯，区别在于限制开头结尾的内容)
+    // demo1
+    var string = "12345";
+    var regex = /(\d{1,3}?)(\d{1,3})/;
+    console.log( string.match(regex) );
+    // => ["1234", "1", "234", index: 0, input: "12345"]
+    // demo2
+    var string = "12345";
+    var regex = /^(\d{1,3}?)(\d{1,3})$/;
+    console.log( string.match(regex) );
+    // => ["12345", "12", "345", index: 0, input: "12345"]
+    // 3.分支结构(demo2也体现了回溯原理, 整体不匹配时候，回到原来的分支，尝试下一个可能)
+    // demo1
+    var string = "candy";
+    var regex = /(?:can|candy)/;
+    console.log( string.match(regex) );
+    // => ["can", index: 0, input: "candy", groups: undefined]
+    // demo2
+    var string = "candy";
+    var regex = /^(?:can|candy)$/;
+    console.log( string.match(regex) );
+    // => ["candy", index: 0, input: "candy", groups: undefined]
+</script>
+</html>
