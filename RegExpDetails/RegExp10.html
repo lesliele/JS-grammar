@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    // 第五章.正则表达式细节
+    // 1.匹配[abc] demo
+    var reg = /\[abc]/;
+    var string = "[abc]";
+    console.log(string.match(reg))
+    // 只需要在第一个方括号转义即可，因为后面无法构成字符组，就无需转义了
+    // 2.准确性
+    // demo1.(匹配固定电话) => 常见的错误
+    // demo2.(浮点数) => 优化方法
+    var reg = /^([+-])?((\d+\.\d+)|\d+|(\.\d+))$/;
+    var string = "-.2";
+    console.log(string.match(reg))
+    // 3.四种操作
+    // (test,match,exec) + search
+    // a.search和match参数问题
+    // 都会把字符串转化为正则
+    // tips:在字符串转化为正则表达式时,遇到"\"也是需要转义的
+    var re = new RegExp("\\w+");
+    var re = /\w+/;
+    // 这两个都是等价的
+
+
+
+
+    var string = "2017.06.27";
+
+    console.log(string.search("."));
+    // => 0
+    //需要修改成下列形式之一
+    console.log(string.search("\\."));
+    console.log(string.search(/\./));
+    // => 4
+    // => 4
+
+    console.log(string.match("."));
+    // => ["2", index: 0, input: "2017.06.27"]
+    //需要修改成下列形式之一
+    console.log(string.match("\\."));
+    console.log(string.match(/\./));
+    // => [".", index: 4, input: "2017.06.27"]
+    // => [".", index: 4, input: "2017.06.27"]
+
+    console.log(string.split("."));
+    // => ["2017", "06", "27"]
+
+    console.log(string.replace(".", "/"));
+    // => "2017/06.27"
+
+    // b.修饰符g,对正则实例exec和test有影响
+    // 这两个方法当时全局匹配时候，每一次匹配完成后，会修改到lastIndex
+    var regex = /a/g;
+    console.log(regex.test("a"), regex.lastIndex);
+    console.log(regex.test("aba"), regex.lastIndex);
+    console.log(regex.test("ababc"), regex.lastIndex);
+    // => true 1
+    // => true 3
+    // => false 0
+
+    // c.split注意事项
+    // c.1 可以有第二个参数,表示结果数组的最大长度
+    var string = "html,css,javascript";
+    console.log(string.split(/,/, 2));
+    // =>["html", "css"]
+    // c.2正则表达式使用捕获分组时候，结果数组也是包含分隔符
+    var string = "html,css,javascript";
+    console.log(string.split(/(,)/));
+    // =>["html", ",", "css", ",", "javascript"]
+
+    // d.replace方法
+    // d.1 当第二个参数是字符串时候,
+    // $& 代表匹配到的子串文本
+    var result = "2,3,5".replace(/(\d+)/g, "$&$&$&");
+    console.log(result);
+    // => "222,333,555"
+    // d.2 当第二个参数是函数时候,相比之下，不用像exec那样去while循环
+    "1234 2345 3456".replace(/(\d)\d{2}(\d)/g, function (match, $1, $2, index, input) {
+        console.log([match, $1, $2, index, input]);
+    });
+    // => ["1234", "1", "4", 0, "1234 2345 3456"]
+    // => ["2345", "2", "5", 5, "1234 2345 3456"]
+    // => ["3456", "3", "6", 10, "1234 2345 3456"]
+
+    console.log({}.toString.call([1,2,3]))
+</script>
+
+</html>
