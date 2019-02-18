@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    // 1.使用一个函数来计算指定字符串中的元音字母数量(a,e,i,o,u) countVowels("Celebration")
+    // (1)
+    // function countVowels(str) {
+    //     let regex = /a|e|i|o|u/gi;
+    //     let i = 0;
+    //     let result;
+    //     while (result = regex.exec(str)) {
+    //         i++;
+    //     }
+    //     return i;
+    // }
+    // (2)
+    function countVowels(str) {
+        console.log(str.match(/[aeiou]/g))
+        return str.match(/[aeiou]/g).length;
+    }
+    // console.log(countVowels("Celebration")); //5
+    // console.log(countVowels("Palm")); //1
+    console.log(countVowels("Prediction")); //4
+</script>
+
+</html>
