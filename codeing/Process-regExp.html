@@ -12,7 +12,12 @@
 
 </body>
 <script>
-    // 1.使用一个函数来计算指定字符串中的元音字母数量(a,e,i,o,u) countVowels("Celebration")
+    /*
+        T 最高级
+        M 中级
+        L 低级
+    */
+    // 1.使用一个函数来计算指定字符串中的元音字母数量(a,e,i,o,u) countVowels("Celebration") => 5(M)
     // (1)
     // function countVowels(str) {
     //     let regex = /a|e|i|o|u/gi;
@@ -25,12 +30,148 @@
     // }
     // (2)
     function countVowels(str) {
-        console.log(str.match(/[aeiou]/g))
+        console.log(str.match(/[aeiou]/g));
         return str.match(/[aeiou]/g).length;
     }
     // console.log(countVowels("Celebration")); //5
     // console.log(countVowels("Palm")); //1
     console.log(countVowels("Prediction")); //4
+
+    // 2.写一个可以移除元音字母的函数("We're gonna build a wall!" ➞ "W'r gnn bld wll!")(L)
+    function remove(str) {
+        return str.replace(/[aeiou]/gi, "");
+    }
+    console.log(remove("Happy Thanksgiving to all--even the haters and losers!"));
+    // 3.千分号(M)
+    function formatNum(num) {
+        return num.replace(/(?!^)(?=(\d{3})+$)/g, ",");
+    }
+    console.log(formatNum("100000"));
+    // 4.创建一个只能4位或者6位的纯数字函数(1234 => true 12345 => false 123a => false)(L)
+    function validatePIN(pin) {
+        return /^(\d{4}|\d{6})$/.test(pin);
+    }
+    console.log(validatePIN("@234"));
+    // 5.创建一个函数，参数为str(原字符串),nth(从哪里开始),oldChar(要替换的字符),newChar(替换后的字符)(T)
+    // 如果str为空
+    // 如果nth为0，负数，大于字符串长度的按照原来的字符串
+    // 如果oldChar不存在
+    // (1)
+    // function replaceNth(str, nth, oldChar, newChar) {
+    //     if (str == "" || nth <= 0 || nth >= str.length || str.indexOf(oldChar) == -1) {
+    //         return str;
+    //     } else {
+    //         let regex = new RegExp("\\" + oldChar, "g");
+    //         let result = [];
+    //         str.replace(regex, function (match, c, n) {
+    //             result.push(c);
+    //         });
+    //         let col = result.filter((x, y) => (y + 1) % nth == 0);
+    //         let temp = str.split("");
+    //         for (let i = 0; i < col.length; i++) {
+    //             temp.splice(col[i], 1, newChar);
+    //         }
+    //         return temp.join("");
+    //     }
+    // }
+    // (2)
+    replaceNth = (s, n, c, C) => (
+        i = 0,
+        [...s].map(x => x == c && ++i % n < 1 ? C : x).join `` //标签模板
+    )
+    // tips 需要将值强制转化!!
+    // 能够转换为false的表达式有null,NAN,0,""(空字符串),undefined
+    console.log("------------------------")
+    console.log(true && ""); //""
+    console.log(!!(true && "")) //false
+    console.log("cat" && "dog") //dog
+    console.log("dog" && true) //true
+    console.log(true && "dog") //dog
+    console.log("dog" && false) //false
+    console.log(false && "dog") //false
+    console.log("hello" && 0) //0
+    // 引用: https://www.cnblogs.com/dong-xu/p/6196844.html
+    // 其内部的原理可不止这么简单，因为 && 和 || 返回的并不是判断条件的真假 ，而是判断条件中的一个原始值。它将依次对条件判断中的值进行判断，
+    // 如果是非布尔值，则转换成布尔值做判断，然后再根据判断条件来决定返回哪一个值。
+    // 对于 && ：该运算符返回条件语句中的第一个假值，如果所有的值都为真，则返回最后一个值，&& 也被称为 “守护运算符” 。
+    console.log("------------------------")
+    // 对于 ||：该运算符与 && 运算符相反，它返回条件语句中的第一个真值，如果所有值都为假，则返回最后一个值。
+    console.log("hello" || 0) //hello
+    console.log("" || null) //null
+    console.log(false || 100) //100
+    // "Vader said: No, I am your father!", 2, "a", "o") ➞ "Vader soid: No, I am your fother!"
+    console.log(replaceNth("Vader said: No, I am your father", 2, "a", "o"))
+    // 结合项目，通常在请求后会有loading和data
+    // if (this.loading && data) {这里的返回值其实就是data，而不是布尔值true}
+    // 6.检验固定电话号码 (L)
+    // isValidPhoneNumber("(123) 456-7890")
+    function isValidPhoneNumber(phone) {
+        let regex = /^\(\d{3}\)\s\d{3}-\d{4}$/;
+        return regex.test(phone);
+    }
+    console.log(isValidPhoneNumber("098) 123 4567"));
+    // tips 布尔值都会隐式转换为数字，尽量使用=== http://www.ecma-international.org/ecma-262/#sec-abstract-equality-comparison
+    console.log(0 == true) //false 0 == 1
+    console.log(-1 == true) //false  -1 == 1
+    console.log(-1 == false) //false  -1 == 0
+
+    // 7.查找对应的danny(L)
+    // checkIfDannyIsHere("is there dan here ?") ➞ false
+
+    // checkIfDannyIsHere("I found you d4nny") ➞ true
+
+    // checkIfDannyIsHere("and here dan ny ?") ➞ false
+
+    // checkIfDannyIsHere("daxx danny is here daxx") ➞ true
+    // D letter: d, D, |), [), |], 1)
+    // A letter: a, A, @, 4, ^, /\, /-\
+    // N letter: n, N, |\|, /\/, (\)
+    // Y letter: y, Y, `/, '/, °/
+    let regex =
+        /(([dD])|(1\))|(\|\))|(\[\))|(\|\]))(([aA4@^])|(\/\\)|(\/\-\\))(([nN])|(\|\\\|)|(\/\\\/)|(\(\\\)))(([nN])|(\|\\\|)|(\/\\\/)|(\(\\\)))(([yY])|(\`\/)|(\'\/)|(\°\/))/g;
+    console.log("keyboard 1)/-\\n(\\)`/ cheers his best with karma |\\|ot beat sitting.".match(regex));
+    // console.log(regex.test("keyboard 1)/-\\n(\\)`/ cheers his best with karma |\\|ot beat sitting."));
+
+    // 8.任意一个字符是否出现在另外一个字符中,不分大小写，并且出现在字符串最后，如遇到*(通配符),代表任意字符
+    // 1.ABC => Ican'tsingmyAB* / Ican'tsingmyA** / Ican'tsingmy*** / Ican'tsingmy******** (通配符数量大于等于另外一个字符串)
+    // 2.互换位置
+    // 3.不分大小写
+    // 4.字符串最后
+    // 5.特殊字符串
+    // overlap("ABC", "Ican'tsingmyABC") ➞ true
+    // > success
+    // < 
+    // for (i=3;i--)  {
+    //     [...choice].splice(2, 1, "*")
+    //     arry.
+    // }
+    function overlap(str1, str2) {
+        let choice = (str2.length - str1.length > 0) ? str1 : str2;
+        let str = (str2.length - str1.length > 0) ? str2 : str1;
+        let specialRegex = /\*/g;
+        let specailLen = specialRegex.test(str) && str.match(specialRegex).length;
+        if (specailLen && specailLen >= choice.length) {
+            // 通配符大于子字符串
+            return true;
+        } else {
+            let transfer = [...choice].map(x => {
+                let reg = /\w+/gmi;
+                if (!reg.test(x)) {
+                    return "\\" + x;
+                }
+            }).join ``;
+            let firstLetter = choice.substr(0, 1);
+            console.log(firstLetter)
+            let regex = new RegExp(`(${transfer}|[${firstLetter}](\\*)+)$`, "i");
+            console.log(regex)
+            return regex.test(str);
+        }
+    }
+    // console.log(overlap("hey", "*********"));
+    // console.log(overlap("***", "hey222"));
+    console.log(overlap("ABC", "Ican'tsingmyABC"))
+    let str = "\a\b\c";
+    console.log(/abc/.test(str))
 </script>
 
 </html>
