@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    // 前行断言的详细用法(常见的2种形式)
+    // (1) 在前行后后行的左右两侧
+    // (?=exp) 顺序肯定环视，表示所在位置右侧能够匹配exp
+    // (?<=exp) 逆序肯定环视，表示所在位置左侧能够匹配exp
+    console.log('<div><h2>title</h2><p>content</p></div>'.match(/(?<=\<)[a-z0-9]+(?=\>)/g));
+    // (?=.gif)这个匹配到什么？其实他匹配到的只是一个位置，这就是断言的初衷,匹配到的是介于abc与.gif的位置。
+    var s = "img.jpg,abc.gif,123.jpeg";
+    var regex3 = /(\w+)(?=\.gif)/;
+    console.log(s.match(regex3));
+
+    var s = "img.jpg,abc.gif,123.jpeg";
+    console.log(s.replace(/(?=\.gif)/, "#"));
+
+    var s = "img.jpg,abc.gif,123.jpeg";
+    console.log(s.match(/(\w*)(?:\.)(?!gif)/g));
+    // (2) 单独分开的感觉，不像是插入其中匹配
+    // 类似于检测字符串是否都包括[a-z][A-Z][0-9]
+    var s = "aaAbc1de";
+    var regex = /(?=.*[a-z].*)(?=.*[A-Z].*)(?=.*[0-9].*)^[a-zA-Z0-9]+/;
+    console.log(s.match(regex))
+</script>
+
+</html>

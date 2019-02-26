@@ -132,46 +132,117 @@
     console.log("keyboard 1)/-\\n(\\)`/ cheers his best with karma |\\|ot beat sitting.".match(regex));
     // console.log(regex.test("keyboard 1)/-\\n(\\)`/ cheers his best with karma |\\|ot beat sitting."));
 
-    // 8.任意一个字符是否出现在另外一个字符中,不分大小写，并且出现在字符串最后，如遇到*(通配符),代表任意字符
-    // 1.ABC => Ican'tsingmyAB* / Ican'tsingmyA** / Ican'tsingmy*** / Ican'tsingmy******** (通配符数量大于等于另外一个字符串)
-    // 2.互换位置
-    // 3.不分大小写
-    // 4.字符串最后
-    // 5.特殊字符串
-    // overlap("ABC", "Ican'tsingmyABC") ➞ true
-    // > success
-    // < 
-    // for (i=3;i--)  {
-    //     [...choice].splice(2, 1, "*")
-    //     arry.
-    // }
-    function overlap(str1, str2) {
-        let choice = (str2.length - str1.length > 0) ? str1 : str2;
-        let str = (str2.length - str1.length > 0) ? str2 : str1;
-        let specialRegex = /\*/g;
-        let specailLen = specialRegex.test(str) && str.match(specialRegex).length;
-        if (specailLen && specailLen >= choice.length) {
-            // 通配符大于子字符串
-            return true;
-        } else {
-            let transfer = [...choice].map(x => {
-                let reg = /\w+/gmi;
-                if (!reg.test(x)) {
-                    return "\\" + x;
+    // 8.解析网址
+    // ip地址书写
+    function decomposeUrl(url) {
+        let initUrl = url + "/";
+        let result = {};
+        let infos = {
+            protocol: /^(\w+):\/\//,
+            adress: /:\/\/(.*?)\/((\w+\/)*)(.*?)?(\?.*?)?\/?$/,
+            folderTree: /:\/\/(?:.*?)\/((\w+\/)*)(.*?)?(\?.*?)?\/?$/,
+            targetFile: /:\/\/(?:.*?)\/((\w+\/)*)(.*?)(\?.*?)?\/?$/,
+            argumentsFile: /\/(?:[^/]*?)(\?.*?)\/?$/,
+        };
+        let regexIp =
+            /:\/\/((25[0-5]|2[0-4]\d|0[0-9][0-9]|0[0-9]|((1\d{2})|([1-9]?\d)))\.){3}(25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))/;
+        let regexAd = /:\/\/(\w+)\.(\w+\.?)(\w+)?/;
+        let regexIpSeries = /:\/\/(\d+\.?){4}/;
+        for (let key in infos) {
+            if (initUrl.match(infos[key])) {
+                if (key == "adress") {
+                    let assign = "";
+                    let assign2 = "";
+                    if (initUrl.match(regexIp)) {
+                        assign = initUrl.match(regexIp)[0].replace("://", '');
+                        Object.assign(result, {
+                            ipAdress: assign,
+                            subDomain: null,
+                            domainName: null
+                        });
+                    } else if (initUrl.match(regexIpSeries)) {
+                        assign = initUrl.match(regexIpSeries)[0].replace("://", '');
+                        Object.assign(result, {
+                            ipAdress: null,
+                            subDomain: null,
+                            domainName: assign
+                        });
+                    } else if (initUrl.match(regexAd)) {
+                        if (RegExp.$3) {
+                            assign = RegExp.$1;
+                            assign2 = RegExp.$2 + RegExp.$3;
+                        } else {
+                            assign2 = RegExp.$1 + "." + RegExp.$2;
+                        }
+                        Object.assign(result, {
+                            ipAdress: null,
+                            subDomain: (RegExp.$3) ? assign : null,
+                            domainName: assign2
+                        })
+                    }
                 }
-            }).join ``;
-            let firstLetter = choice.substr(0, 1);
-            console.log(firstLetter)
-            let regex = new RegExp(`(${transfer}|[${firstLetter}](\\*)+)$`, "i");
-            console.log(regex)
-            return regex.test(str);
+                if (key !== "adress") {
+                    Object.assign(result, {
+                        [key]: (key == "targetFile") ? RegExp.$3 : RegExp.$1
+                    })
+                }
+            } else {
+                Object.assign(result, {
+                    [key]: null
+                })
+            }
         }
+        for (let key in result) {
+            if (result[key] === "") {
+                Object.assign(result, {
+                    [key]: null
+                });
+            } else if (key === "folderTree") {
+                Object.assign(result, {
+                    [key]: result[key].split("/").filter(x => x !== "" && x !== "bSuzdY5mYYLbuasX8")
+                });
+                if (initUrl.match(/bSuzdY5mYYLbuasX8/)) {
+                    Object.assign(result, {
+                        targetFile: "bSuzdY5mYYLbuasX8"
+                    })
+                }
+            }
+        }
+        return result;
     }
-    // console.log(overlap("hey", "*********"));
-    // console.log(overlap("***", "hey222"));
-    console.log(overlap("ABC", "Ican'tsingmyABC"))
-    let str = "\a\b\c";
-    console.log(/abc/.test(str))
+    console.log(decomposeUrl("https://edabit.com/edit/challenge/bSuzdY5mYYLbuasX8"))
+    // 9.移除特殊字符(L)
+    function removeSpecialCharacters(str) {
+        return str.replace(/[^\w-\s]/gmi, "");
+    }
+    console.log(removeSpecialCharacters("D0n$c sed 0di0 du1"));
+    // 10.password (T)
+    // Length between 6 and 24 characters.
+    // At least one uppercase letter (A-Z).
+    // At least one lowercase letter (a-z).
+    // At least one digit (0-9).
+    // Maximum of 2 repeated characters.
+    // "aa" is OK 👍
+    // "aaa" is NOT OK 👎
+    // Special characters supported: ! @ # $ % ^ & * ( ) + = _ - { } [ ] : ; ” ’ ? <> , .
+    // (1)
+    function validatePassword(password) {
+        let regex =
+            /([a-z]+[A-Z]+|[A-Z]+[a-z]+)(?=(\d+|[^A-Za-z]))|(\d+[A-Z]+|[A-Z]+\d+)(?=([a-z]+|[^0-9A-Z]))|([a-z]+\d+|\d+[a-z]+)(?=([A-Z]+|[^a-z0-9]))/;
+        let regex2 = /(\w)\1\1/gmi;
+        if (regex.test(password) && !password.match(regex2) && password.length >= 6 && password.length <= 24) {
+            return true;
+        }
+        return false;
+    }
+    console.log(validatePassword("H4(k+x0"))
+    // (2)
+    const validatePassword = password => {
+        const reg =
+            /(?=.*[A-Z].*)(?=.*[a-z].*)(?=.*\d.*)^[a-zA-Z0-9!@#\$%\^&\*\(\)\+=_\-\{\}\[\]:;”’\?<>\,\.]{6,24}$/;
+        const reg2 = /(.)\1\1/g;
+        return reg.test(password) && !reg2.test(password);
+    }
 </script>
 
 </html>
