@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    // 1.普通函数方法
+    console.log(Date())
+    console.log(Date(2018, 2, 28))
+    // 无论有没有参数，直接调用Date总是返回当前时间。
+    // 2.构造函数
+    // 月：0表示一月，依次类推，11表示12月。
+    console.log(new Date(2018, 2, 10, 0, 0, 0, 0)) //代表年，月，日，小时，分钟，秒，毫秒
+    // tips:
+    // 1.这些参数如果超出了正常范围，会被自动折算。比如，如果月设为15，就折算为下一年的4月。
+    console.log(new Date(2019, 13)) //Sat Feb 01 2020 00:00:00 GMT+0800 (中国标准时间)
+    // 2.日期设为0，就代表上个月的最后一天。
+    console.log(new Date(2019, 2, 0));
+    console.log(new Date(2019, 0, 0));
+
+    // 3.日期的运算
+    let a = new Date(2019, 1, 27);
+    let b = new Date(2019, 1, 28);
+    console.log(b - a); //数字，距离1970的毫秒数
+    console.log(b + a); //字符串
+
+    // 4.静态方法
+    // 1.Date.now方法返回当前时间距离时间零点（1970年1月1日 00:00:00 UTC）的毫秒数
+    console.log(Date.now());
+    // 2.Date.parse方法用来解析日期字符串，返回该时间距离时间零点（1970年1月1日 00:00:00）的毫秒数。
+    console.log(Date.parse("1970/1/2"))
+    console.log(Date.parse("1970-1-2"))
+    console.log(Date.parse("1970.1.2"))
+
+    // 5.实例方法
+    // Date的实例对象，有几十个自己的方法，除了valueOf和toString，可以分为以下三类。
+    // to类：从Date对象返回一个字符串，表示指定的时间。
+    // get类：获取Date对象的日期和时间。
+    // set类：设置Date对象的日期和时间。
+
+    // to类和set类省略
+    // getTime()： 返回实例距离1970年1月1日00: 00: 00 的毫秒数， 等同于valueOf方法。
+    // getDate()： 返回实例对象对应每个月的几号（ 从1开始）。
+    // getDay()： 返回星期几， 星期日为0， 星期一为1， 以此类推。
+    // getYear()： 返回距离1900的年数。
+    // getFullYear()： 返回四位的年份。
+    // getMonth()： 返回月份（ 0 表示1月， 11 表示12月）。
+    // getHours()： 返回小时（ 0 - 23）。
+    // getMilliseconds()： 返回毫秒（ 0 - 999）。
+    // getMinutes()： 返回分钟（ 0 - 59）。
+    // getSeconds()： 返回秒（ 0 - 59）。
+</script>
+
+</html>
